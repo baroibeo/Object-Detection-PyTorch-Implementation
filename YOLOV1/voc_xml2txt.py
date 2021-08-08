@@ -77,7 +77,8 @@ if __name__=='__main__':
         f.close()
     
 
-    # python voc_xml2txt.py --annos_dir=E:\Datasets\VOC2007\train_val\VOCdevkit\VOC2007\Annotations\ --output_dir=voc_2007_annos_txt\
+    # python voc_xml2txt.py --annos_dir=E:\Datasets\VOC2007\train_val\VOCdevkit\VOC2007\Annotations\ --output_dir=voc_2007_annos_txt\train_val\
+    # python voc_xml2txt.py --annos_dir=E:\Datasets\VOC2007\test\VOCdevkit\VOC2007\Annotations\ --output_dir=voc_2007_annos_txt\test\
 
 
     
