@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import torch
 from torch.utils.data import Dataset
+from augmentations import Transforms
 
 VOC_CLASSES = (  # always index 0
     'aeroplane', 'bicycle', 'bird', 'boat',
@@ -39,10 +40,11 @@ def parse_xml(xml_path):
     return infos
 
 class VOC(Dataset):
-    def __init__(self,img_root,anno_root,transform = None):
+    def __init__(self,img_root,anno_root,train = False,transform = None):
         self.img_root = img_root
         self.anno_root = anno_root
         self.anno_lists = os.listdir(anno_root)
+        self.train = train
         self.transform = transform
     
     def __len__(self):
@@ -58,9 +60,14 @@ class VOC(Dataset):
         for i in range(anno["num_boxes"]):
             boxes.append(anno["box_"+str(i)])
         boxes = torch.Tensor(boxes)
-        img = VOC.visualize_bndbox(img,boxes)
-        plt.imshow(img)
-        plt.show( )
+
+        if self.transform:
+            transform = Transforms(img,boxes,self.train)
+        
+        # return img,boxes
+        # img = VOC.visualize_bndbox(img,boxes)
+        # plt.imshow(img)
+        # plt.show()
     
     @staticmethod
     def visualize_bndbox(img,bndboxes,coord_mode = ""):
@@ -98,7 +105,6 @@ class VOC(Dataset):
 def test():
     xml_path = "D:\\datasets\\VOC2012\\VOCdevkit\\VOC2012\\Annotations\\2007_000027.xml"
     print(parse_xml(xml_path))
-
     img_root = "D:\\datasets\\VOC2012\\VOCdevkit\\VOC2012\\JPEGImages"
     anno_root = "D:\\datasets\\VOC2012\\VOCdevkit\\VOC2012\\Annotations"
     ds = VOC(img_root,anno_root)
